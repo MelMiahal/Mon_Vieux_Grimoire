@@ -11,17 +11,14 @@ npm install
 npm start
 ```
 
-Dans le second terminal, préparez puis lancez le back-end :
+Dans le second terminal, installez et démarrez le back-end :
 
 ```sh
 cd backend
 npm install
-Copy-Item .env.example .env
 npm start
 ```
 
-Le fichier `.env` contient l'adresse de connexion MongoDB. La configuration
-fournie utilise une base MongoDB locale nommée `mon-vieux-grimoire`. Adaptez
-`MONGODB_URI` dans `.env` si votre MongoDB se trouve ailleurs.
-
-Le serveur back-end écoute sur le port `4000`, utilisé par le front-end.
+Le serveur Express écoute sur `http://localhost:4000`. Ses premières routes
+sont `GET /` et `GET /api/health`. MongoDB n'est pas nécessaire pour cette
+étape.
