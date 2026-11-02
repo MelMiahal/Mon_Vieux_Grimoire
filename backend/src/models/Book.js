@@ -8,6 +8,12 @@ const ratingSchema = new mongoose.Schema({
   grade: {
     type: Number,
     required: true,
+    min: 0,
+    max: 5,
+    validate: {
+      validator: Number.isInteger,
+      message: 'A rating must be an integer between 0 and 5',
+    },
   },
 });
 
@@ -31,6 +37,7 @@ const bookSchema = new mongoose.Schema({
   year: {
     type: Number,
     required: true,
+    min: 0,
   },
   genre: {
     type: String,

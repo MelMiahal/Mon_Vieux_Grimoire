@@ -16,9 +16,13 @@ Dans le second terminal, installez et démarrez le back-end :
 ```sh
 cd backend
 npm install
+Copy-Item .env.example .env
 npm start
 ```
 
-Le serveur Express écoute sur `http://localhost:4000`. Ses premières routes
-sont `GET /` et `GET /api/health`. MongoDB n'est pas nécessaire pour cette
-étape.
+Assurez-vous qu'un serveur MongoDB local est démarré. Le fichier `.env` fourni
+utilise la base `mon-vieux-grimoire` sur la machine locale ; modifiez
+`MONGODB_URI` si votre base est hébergée ailleurs.
+
+Le serveur Express se connecte à MongoDB avant d'écouter sur
+`http://localhost:4000`.

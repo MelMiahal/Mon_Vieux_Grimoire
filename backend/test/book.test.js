@@ -43,3 +43,17 @@ test('Book ratings contain a user ID and a numeric grade', () => {
   assert.equal(book.ratings[0].grade, 4);
   assert.deepEqual(book.validateSync(), undefined);
 });
+
+test('Book ratings must be integers between 0 and 5', () => {
+  const book = new Book({
+    userId: 'owner-id',
+    title: 'Le livre',
+    author: 'Une autrice',
+    imageUrl: 'http://localhost:4000/images/book.webp',
+    year: 2026,
+    genre: 'Roman',
+    ratings: [{ userId: 'reader-id', grade: 5.5 }],
+  });
+
+  assert.ok(book.validateSync().errors['ratings.0.grade']);
+});
