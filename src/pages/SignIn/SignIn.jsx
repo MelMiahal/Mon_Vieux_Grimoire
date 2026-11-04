@@ -8,6 +8,32 @@ import { storeInLocalStorage } from '../../lib/common';
 import { ReactComponent as Logo } from '../../images/Logo.svg';
 import styles from './SignIn.module.css';
 
+function getFrenchErrorMessage(error) {
+  const apiMessage = error.response?.data?.error;
+  const translatedMessages = {
+    'Email and password are required': 'Veuillez saisir votre adresse e-mail et votre mot de passe.',
+    'Invalid email or password': 'Adresse e-mail ou mot de passe incorrect.',
+    'Authentication required': 'Veuillez vous connecter pour continuer.',
+    'Invalid authentication token': 'Votre session est invalide. Veuillez vous reconnecter.',
+  };
+
+  if (apiMessage) {
+    if (translatedMessages[apiMessage]) {
+      return translatedMessages[apiMessage];
+    }
+
+    if (/email.*unique|unique.*email/i.test(apiMessage)) {
+      return 'Cette adresse e-mail est déjà utilisée.';
+    }
+
+    if (apiMessage.startsWith('ValidationError') || apiMessage.startsWith('CastError')) {
+      return 'Les informations fournies sont invalides.';
+    }
+  }
+
+  return 'Une erreur est survenue. Veuillez réessayer.';
+}
+
 function SignIn({ setUser }) {
   const navigate = useNavigate();
   const { user, authenticated } = useUser();
@@ -17,8 +43,15 @@ function SignIn({ setUser }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [formKey, setFormKey] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({ error: false, message: '' });
+  const clearCredentials = () => {
+    setEmail('');
+    setPassword('');
+    setFormKey((currentKey) => currentKey + 1);
+  };
+
   const signIn = async () => {
     try {
       setIsLoading(true);
@@ -35,12 +68,16 @@ function SignIn({ setUser }) {
         console.log('Something went wrong during signing in: ', response);
       } else {
         storeInLocalStorage(response.data.token, response.data.userId);
+        clearCredentials();
         setUser(response.data);
         navigate('/');
       }
     } catch (err) {
       console.log(err);
-      setNotification({ error: true, message: err.message });
+      setNotification({
+        error: true,
+        message: getFrenchErrorMessage(err),
+      });
       console.log('Some error occured during signing in: ', err);
     } finally {
       setIsLoading(false);
@@ -59,12 +96,16 @@ function SignIn({ setUser }) {
         },
       });
       if (!response?.data) {
-        console.log('Something went wrong during signing up: ', response);
+        setNotification({ error: true, message: 'La création du compte a échoué. Veuillez réessayer.' });
         return;
       }
-      setNotification({ error: false, message: 'Votre compte a bien été créé, vous pouvez vous connecter' });
+      clearCredentials();
+      setNotification({ error: false, message: 'Votre compte a bien été créé, vous pouvez vous connecter.' });
     } catch (err) {
-      setNotification({ error: true, message: err.message });
+      setNotification({
+        error: true,
+        message: getFrenchErrorMessage(err),
+      });
       console.log('Some error occured during signing up: ', err);
     } finally {
       setIsLoading(false);
@@ -78,15 +119,20 @@ function SignIn({ setUser }) {
         {notification.message.length > 0 && <p>{notification.message}</p>}
       </div>
       <div className={styles.Form}>
-        <label htmlFor={email}>
+        <label htmlFor="email">
           <p>Adresse email</p>
           <input
             className=""
             type="text"
             name="email"
             id="email"
+            key={`email-${formKey}`}
+            autoComplete="off"
             value={email}
-            onChange={(e) => { setEmail(e.target.value); }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setNotification({ error: false, message: '' });
+            }}
           />
         </label>
         <label htmlFor="password">
@@ -96,8 +142,13 @@ function SignIn({ setUser }) {
             type="password"
             name="password"
             id="password"
+            key={`password-${formKey}`}
+            autoComplete="new-password"
             value={password}
-            onChange={(e) => { setPassword(e.target.value); }}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setNotification({ error: false, message: '' });
+            }}
           />
         </label>
         <div className={styles.Submit}>

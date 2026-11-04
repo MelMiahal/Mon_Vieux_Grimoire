@@ -24,5 +24,16 @@ Assurez-vous qu'un serveur MongoDB local est démarré. Le fichier `.env` fourni
 utilise la base `mon-vieux-grimoire` sur la machine locale ; modifiez
 `MONGODB_URI` si votre base est hébergée ailleurs.
 
+Définissez également `JWT_SECRET` dans `.env` avec une clé privée longue et
+aléatoire. Ne partagez pas ce fichier et ne le poussez pas sur GitHub.
+
 Le serveur Express se connecte à MongoDB avant d'écouter sur
 `http://localhost:4000`.
+
+## Authentification
+
+- `POST /api/auth/signup` crée un utilisateur et stocke son mot de passe haché.
+- `POST /api/auth/login` vérifie les identifiants et renvoie `userId` et un
+  token JWT.
+- `GET /api/auth/me` est une route protégée de vérification. Elle attend un
+  en-tête `Authorization: Bearer <token>`.
