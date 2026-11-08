@@ -20,12 +20,15 @@ Copy-Item .env.example .env
 npm start
 ```
 
-Assurez-vous qu'un serveur MongoDB local est démarré. Le fichier `.env` fourni
-utilise la base `mon-vieux-grimoire` sur la machine locale ; modifiez
-`MONGODB_URI` si votre base est hébergée ailleurs.
+Le backend requiert Node.js 20.9 ou une version ultérieure pour Sharp.
+Par défaut, le fichier `.env.example` utilise la base MongoDB locale
+`mon-vieux-grimoire`. Pour utiliser MongoDB Atlas ou un autre serveur,
+remplacez `MONGODB_URI` dans `.env` par votre URI de connexion.
 
 Définissez également `JWT_SECRET` dans `.env` avec une clé privée longue et
 aléatoire. Ne partagez pas ce fichier et ne le poussez pas sur GitHub.
+`PUBLIC_BASE_URL` indique l'adresse publique utilisée pour les couvertures
+(par défaut `http://localhost:4000` en développement).
 
 Le serveur Express se connecte à MongoDB avant d'écouter sur
 `http://localhost:4000`.
@@ -37,3 +40,18 @@ Le serveur Express se connecte à MongoDB avant d'écouter sur
   token JWT.
 - `GET /api/auth/me` est une route protégée de vérification. Elle attend un
   en-tête `Authorization: Bearer <token>`.
+
+## Livres et images
+
+Les livres sont consultables sur `GET /api/books`, `GET /api/books/:id` et
+`GET /api/books/bestrating`. Les utilisateurs authentifiés peuvent ajouter un
+livre avec `POST /api/books`. La note initiale est facultative et comprise
+entre 1 et 5 ; sans note, la moyenne commence à 0. Le créateur est enregistré
+comme auteur de cette note. Les utilisateurs peuvent modifier leurs livres avec
+`PUT /api/books/:id` ou le supprimer avec `DELETE /api/books/:id`. Les
+utilisateurs authentifiés peuvent noter un livre une seule fois avec
+`POST /api/books/:id/rating` et une note entière de 1 à 5. Les formulaires
+d'ajout et de modification envoient les champs du livre dans le champ
+multipart `book` et la couverture dans `image`.
+Les couvertures JPEG, PNG et WebP sont redimensionnées à 1200 pixels maximum,
+converties en WebP et servies depuis `/images`.

@@ -5,7 +5,7 @@ function errorHandler(error, req, res, next) {
 
   let status = error.status || error.statusCode || 500;
   if (error.name === 'ValidationError' || error.name === 'CastError'
-    || error.code === 11000) {
+    || error.name === 'MulterError' || error.code === 11000) {
     status = 400;
   }
 

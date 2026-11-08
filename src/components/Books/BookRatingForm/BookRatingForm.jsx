@@ -29,14 +29,14 @@ function BookRatingForm({
   const onSubmit = async () => {
     if (!connectedUser || !auth) {
       navigate(APP_ROUTES.SIGN_IN);
+      return;
     }
     const update = await rateBook(id, userId, rating);
-    console.log(update);
-    if (update) {
+    if (update && !update.error) {
       // eslint-disable-next-line no-underscore-dangle
       setBook({ ...update, id: update._id });
     } else {
-      alert(update);
+      alert(update?.message || 'Impossible d’enregistrer votre note.');
     }
   };
   return (

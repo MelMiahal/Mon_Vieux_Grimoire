@@ -109,23 +109,17 @@ export async function rateBook(id, userId, rating) {
     return book;
   } catch (e) {
     console.error(e);
-    return e.message;
+    return { error: true, message: e.response?.data?.error || e.message };
   }
 }
 
 export async function addBook(data) {
-  const userId = localStorage.getItem('userId');
   const book = {
-    userId,
     title: data.title,
     author: data.author,
     year: data.year,
     genre: data.genre,
-    ratings: [{
-      userId,
-      grade: data.rating ? parseInt(data.rating, 10) : 0,
-    }],
-    averageRating: parseInt(data.rating, 10),
+    rating: data.rating ? parseInt(data.rating, 10) : 0,
   };
   const bodyFormData = new FormData();
   bodyFormData.append('book', JSON.stringify(book));
