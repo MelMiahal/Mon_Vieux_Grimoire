@@ -16,11 +16,14 @@ test('POST /api/books/:id/rating saves the authenticated user rating and average
   });
 
   const originalFindById = Book.findById;
+  let saveCount = 0;
   const book = {
     _id: 'book-id',
     ratings: [],
     averageRating: 0,
-    async save() {},
+    async save() {
+      saveCount += 1;
+    },
   };
   Book.findById = async () => book;
 
@@ -63,6 +66,24 @@ test('POST /api/books/:id/rating saves the authenticated user rating and average
   assert.equal(result.averageRating, 4);
   assert.deepEqual(result.ratings, [{ userId: 'authenticated-user', grade: 4 }]);
 
+  const secondUserToken = jwt.sign({ userId: 'second-user' }, process.env.JWT_SECRET);
+  const secondRating = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${secondUserToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ rating: 3 }),
+  });
+  assert.equal(secondRating.status, 200);
+  const updatedBook = await secondRating.json();
+  assert.equal(updatedBook.averageRating, 3.5);
+  assert.deepEqual(updatedBook.ratings, [
+    { userId: 'authenticated-user', grade: 4 },
+    { userId: 'second-user', grade: 3 },
+  ]);
+  assert.equal(saveCount, 2);
+
   const duplicate = await fetch(url, {
     method: 'POST',
     headers: {
@@ -72,5 +93,6 @@ test('POST /api/books/:id/rating saves the authenticated user rating and average
     body: JSON.stringify({ rating: 5 }),
   });
   assert.equal(duplicate.status, 400);
-  assert.equal(book.averageRating, 4);
+  assert.equal(book.averageRating, 3.5);
+  assert.equal(saveCount, 2);
 });

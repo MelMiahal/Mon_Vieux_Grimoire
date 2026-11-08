@@ -54,4 +54,5 @@ utilisateurs authentifiés peuvent noter un livre une seule fois avec
 d'ajout et de modification envoient les champs du livre dans le champ
 multipart `book` et la couverture dans `image`.
 Les couvertures JPEG, PNG et WebP sont redimensionnées à 1200 pixels maximum,
-converties en WebP et servies depuis `/images`.
+converties en WebP et servies depuis `/images`. Les couvertures des livres de
+démonstration sont servies depuis `/demo-images`.
