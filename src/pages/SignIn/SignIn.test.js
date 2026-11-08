@@ -2,8 +2,9 @@ import React from 'react';
 import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useUser } from '../../lib/customHooks';
 import SignIn from './SignIn';
 
 jest.mock('axios', () => ({
@@ -11,7 +12,7 @@ jest.mock('axios', () => ({
   default: jest.fn(),
 }));
 jest.mock('../../lib/customHooks', () => ({
-  useUser: () => ({ user: null, authenticated: false }),
+  useUser: jest.fn(() => ({ connectedUser: null, auth: false, userLoading: false })),
 }));
 
 function renderSignIn() {
@@ -26,8 +27,14 @@ function renderSignIn() {
   };
 }
 
+function CurrentPath() {
+  const { pathname } = useLocation();
+  return <span>{pathname}</span>;
+}
+
 beforeEach(() => {
   axios.mockReset();
+  useUser.mockReturnValue({ connectedUser: null, auth: false, userLoading: false });
   localStorage.clear();
 });
 
@@ -57,4 +64,21 @@ test('clears email and password after successful login', async () => {
     expect(screen.getByRole('textbox')).toHaveValue('');
     expect(screen.getByLabelText('Mot de passe')).toHaveValue('');
   });
+});
+
+test('redirects an authenticated user away from the sign-in page', async () => {
+  useUser.mockReturnValue({
+    connectedUser: { userId: 'reader-id' },
+    auth: true,
+    userLoading: false,
+  });
+
+  render(
+    <MemoryRouter initialEntries={['/Connexion']}>
+      <SignIn setUser={jest.fn()} />
+      <CurrentPath />
+    </MemoryRouter>,
+  );
+
+  await waitFor(() => expect(screen.getByText('/')).toBeInTheDocument());
 });

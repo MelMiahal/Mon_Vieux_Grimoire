@@ -82,7 +82,6 @@ function Book() {
           <BookInfo book={book} />
           <BookRatingForm
             userRated={userRated}
-            userId={connectedUser?.userId}
             rating={rating}
             setRating={setRating}
             setBook={setBook}
