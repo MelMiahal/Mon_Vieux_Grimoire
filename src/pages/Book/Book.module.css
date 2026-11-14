@@ -5,6 +5,7 @@
 
 }
 .BookContainer {
+    width: 100%;
     background-color: #FFFFFF;
     margin: auto;
     border-radius: 7px;
@@ -46,6 +47,7 @@
 
 .Deleted img {
     margin-bottom: 75px;
+    max-width: 100%;
 }
 .BookImage {
     width: calc(40% - 80px);
@@ -176,13 +178,69 @@
     .BookContent {
         align-items: center;
         margin-top: 2em;
+        width: 90%;
     }
 
 }
 
 @media all and (max-width: 600px) {
+    .Book {
+        padding-block: 2em;
+    }
+
+    .BookImage {
+        height: clamp(260px, 80vw, 380px);
+        width: 100%;
+        background-size: contain;
+    }
+
     .BookContent {
-        width: 90%;
+        width: 100%;
+        padding-inline: 16px;
+        box-sizing: border-box;
+    }
+
+    .BookInfo {
+        grid-template-rows: minmax(84px, auto) 56px 56px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .BookInfo h1 {
+        font-size: clamp(18px, 5vw, 26px);
+        padding-inline: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .Author {
+        padding-left: 12px;
+        font-size: 14px;
+    }
+
+    .PublishDate, .Genre, .Rating {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .Rating div {
+        margin-right: 8px;
+    }
+
+    .Owner {
+        padding-inline: 0;
+        font-size: 14px;
+    }
+
+    .Deleted {
+        padding: 2.5em 1em;
+        text-align: center;
+    }
+
+    .Deleted h1 {
+        font-size: clamp(26px, 7vw, 40px);
+    }
+
+    .Deleted img {
+        margin-bottom: 36px;
     }
 
 }

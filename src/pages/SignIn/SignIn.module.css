@@ -5,7 +5,7 @@
 }
 
 .Notification {
-    width: 40%;
+    width: min(calc(100% - 32px), 532px);
     margin-top: 30px;
     box-sizing: border-box;
 }
@@ -17,7 +17,7 @@
 .Notification p{
     box-sizing: border-box;
     width: 100%;
-    padding: 20px 50px;
+    padding: 20px clamp(16px, 4vw, 50px);
     background-color: #F9F3EE;
     border: solid 2px #D9A963;
 }
@@ -28,11 +28,12 @@
 
 .Form{
     background-color: #F9F3EE;
-    width: 30%;
+    width: min(calc(100% - 32px), 532px);
     margin: auto;
-    padding: 50px;
+    padding: clamp(20px, 4vw, 50px);
     align-items: center;
     margin-block: 50px;
+    box-sizing: border-box;
 
 }
 .Form, .Form label {
@@ -62,33 +63,44 @@
 }
 
 .Form input {
-    height: 64px;
+    width: 100%;
+    min-width: 0;
+    height: 56px;
     font-size: 16px;
     display: flex;
     align-items: center;
     margin-bottom: 35px;
+    box-sizing: border-box;
 
 }
 .Submit {
     display: flex;
     align-items: center;
+    width: 100%;
+    justify-content: center;
 }
 
 .Submit span {
-    margin-inline: 20px;
+    margin-inline: 12px;
 }
 
-@media all and (max-width: 1300px) {
-    .Form {
-        width: 70%;
+@media (max-width: 600px) {
+    .SignIn > svg {
+        width: min(60%, 280px);
+        height: auto;
     }
-}
 
-@media all and (max-width: 500px) {
     .Submit {
         flex-direction: column;
+        gap: 16px;
     }
+
+    .Submit button {
+        width: 100%;
+        min-height: 48px;
+    }
+
     .Submit span {
-        margin-block: 20px;
+        margin: 0;
     }
 }

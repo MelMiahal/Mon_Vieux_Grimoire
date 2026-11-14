@@ -2,14 +2,15 @@
     display: flex;
     text-decoration: none;
     color: inherit;
-    max-width: 360px;
-    width: 80%;
+    min-width: 0;
+    max-width: 520px;
+    width: 100%;
     align-items: center;
-    margin-bottom: 85px;
 }
 .BookItem article {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 
@@ -26,6 +27,7 @@
 .BookImage {
     width: 206px;
     height: 260px;
+    flex-shrink: 0;
     object-position: center;
     object-fit: contain;
 }
@@ -51,9 +53,11 @@
 }
 .BookInfo {
     display: flex;
+    min-width: 0;
     flex: 1;
     flex-direction: column;
     margin-left: 18px;
+    overflow-wrap: anywhere;
 }
 .Rating{
     display: flex;
@@ -63,6 +67,26 @@
 
 @media all and (max-width: 600px) {
     .BookItem img {
-        width: 50%;
+        width: 40%;
+        max-width: 150px;
+        height: auto;
+        aspect-ratio: 0.79;
+        object-fit: cover;
+    }
+
+    .BookInfo {
+        margin-left: 12px;
+    }
+
+    .BookItem h2, .BookItem h3 {
+        font-size: 16px;
+    }
+
+    .BookItem p {
+        font-size: 13px;
+    }
+
+    .full, .empty {
+        font-size: 18px;
     }
 }

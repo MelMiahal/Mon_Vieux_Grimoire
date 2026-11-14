@@ -43,5 +43,8 @@
 }
 
 @media all and (max-width: 600px) {
-
+    .BookRatingForm form {
+        margin-top: 32px;
+        padding: 24px 16px;
+    }
 }

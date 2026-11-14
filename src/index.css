@@ -48,9 +48,14 @@ table {
 
 body {
   margin: 0;
+  min-width: 320px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F2E3CE;
+}
+
+img {
+  max-width: 100%;
 }
 
 code {
@@ -90,7 +95,7 @@ code {
 
 h1 {
   font-family: "Libre Baskerville", serif;
-  font-size: 44px;
+  font-size: clamp(28px, 4vw, 44px);
   font-style: italic;
   color: #796157;
 }
@@ -111,4 +116,19 @@ button:hover, .button:hover {
   background-color: #B99056;
   color: #fff;
   transition: 0.5s;
+}
+
+@media (max-width: 600px) {
+  .content-container {
+    width: 90%;
+    padding-block: 2.5em;
+  }
+
+  .backArrow {
+    margin-bottom: 2.5em;
+  }
+
+  button, .button {
+    padding: 14px 18px;
+  }
 }

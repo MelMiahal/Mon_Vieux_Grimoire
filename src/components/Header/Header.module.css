@@ -55,11 +55,18 @@
     }
 
     .Header img {
-        margin-top: 20px;
-        width: 50%;
+        margin-top: 16px;
+        width: min(60%, 280px);
+    }
+
+    .Header ul {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .Header ul li {
-        padding-block: 20px;
+        padding: 14px 10px;
+        font-size: 14px;
     }
 }

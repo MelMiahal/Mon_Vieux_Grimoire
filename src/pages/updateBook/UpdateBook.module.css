@@ -7,7 +7,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-block: 80px;
+    padding: clamp(32px, 6vw, 80px) 20px;
+}
+
+.Container h1 {
+    text-align: center;
+    padding-inline: 12px;
+}
+
+@media (max-width: 600px) {
+    .Container {
+        padding-inline: 12px;
+    }
 }
 
 .Container p {

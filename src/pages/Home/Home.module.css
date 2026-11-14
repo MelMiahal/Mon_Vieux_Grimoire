@@ -1,5 +1,6 @@
 .Home {
- position: relative;padding-top: 131px;
+ position: relative;
+ padding-top: clamp(48px, 9vw, 131px);
 
 }
 
@@ -8,7 +9,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 619px;
+    height: clamp(360px, 43vw, 619px);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -28,7 +29,7 @@
 .Home header {
     text-align: center;
     font-family: "Libre Baskerville", serif;
-    padding-top: 85px;
+    padding: clamp(32px, 6vw, 85px) 16px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,20 +37,40 @@
 
 .Home header h1 {
     font-style: italic;
-    font-size: 44px;
+    font-size: clamp(30px, 4vw, 44px);
     color: #796157;
 }
 
 .Home header p {
     font-style: italic;
-    font-size: 28px;
+    font-size: clamp(20px, 2.5vw, 28px);
     padding-block: 10px;
 }
 
 
 .bookList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    margin-block: 140px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 56px 32px;
+    margin: clamp(48px, 10vw, 140px) 40px;
+}
+
+@media (max-width: 700px) {
+    .Home {
+        padding-top: 40px;
+    }
+
+    .banner {
+        height: 360px;
+    }
+
+    .main {
+        width: 92%;
+    }
+
+    .bookList {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 36px;
+        margin: 48px 20px;
+    }
 }
