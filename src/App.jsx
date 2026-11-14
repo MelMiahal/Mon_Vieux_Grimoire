@@ -10,6 +10,7 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import AddBook from './pages/AddBook/AddBook';
 import UpdateBook from './pages/updateBook/UpdateBook';
+import NotFound from './pages/NotFound/NotFound';
 import { useUser } from './lib/customHooks';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
@@ -31,6 +32,7 @@ function App() {
           <Route path={APP_ROUTES.BOOK} element={<Book />} />
           <Route path={APP_ROUTES.UPDATE_BOOK} element={<UpdateBook />} />
           <Route path={APP_ROUTES.ADD_BOOK} element={<AddBook />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </div>
